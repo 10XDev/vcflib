@@ -48,7 +48,6 @@ BIN_SOURCES = src/vcfecho.cpp \
 			  src/vcfentropy.cpp \
 			  src/vcfglxgt.cpp \
 			  src/vcfroc.cpp \
-			  src/vcfsom.cpp \
 			  src/vcfcheck.cpp \
 			  src/vcfstreamsort.cpp \
 			  src/vcfuniq.cpp \
@@ -71,6 +70,9 @@ BIN_SOURCES = src/vcfecho.cpp \
 			  src/vcfqual2info.cpp \
 			  src/vcfglbound.cpp \
 			  src/vcfinfosummarize.cpp \
+
+# when we can figure out how to build on mac
+# src/vcfsom.cpp
 
 #BINS = $(BIN_SOURCES:.cpp=)
 BINS = $(addprefix bin/,$(notdir $(BIN_SOURCES:.cpp=)))
@@ -137,8 +139,8 @@ $(INDELALLELE): $(SMITHWATERMAN)
 $(FASTAHACK):
 	cd fastahack && $(MAKE)
 
-$(FSOM):
-	cd fsom && $(CXX) $(CXXFLAGS) -c fsom.c -lm
+#$(FSOM):
+#	cd fsom && $(CXX) $(CXXFLAGS) -c fsom.c -lm
 
 $(FILEVERCMP):
 	cd filevercmp && make
@@ -146,8 +148,8 @@ $(FILEVERCMP):
 $(SHORTBINS):
 	$(MAKE) bin/$@
 
-$(BINS): $(BIN_SOURCES) $(OBJECTS) $(SMITHWATERMAN) $(FASTAHACK) $(DISORDER) $(LEFTALIGN) $(INDELALLELE) $(SSW) $(FSOM) $(FILEVERCMP)
-	$(CXX) $(OBJECTS) $(SMITHWATERMAN) $(REPEATS) $(DISORDER) $(LEFTALIGN) $(INDELALLELE) $(SSW) $(FASTAHACK) $(FSOM) $(FILEVERCMP) tabixpp/tabix.o tabixpp/bgzf.o src/$(notdir $@).cpp -o $@ $(INCLUDES) $(LDFLAGS) $(CXXFLAGS)
+$(BINS): $(BIN_SOURCES) $(OBJECTS) $(SMITHWATERMAN) $(FASTAHACK) $(DISORDER) $(LEFTALIGN) $(INDELALLELE) $(SSW) $(FILEVERCMP)
+	$(CXX) $(OBJECTS) $(SMITHWATERMAN) $(REPEATS) $(DISORDER) $(LEFTALIGN) $(INDELALLELE) $(SSW) $(FASTAHACK) $(FILEVERCMP) tabixpp/tabix.o tabixpp/bgzf.o src/$(notdir $@).cpp -o $@ $(INCLUDES) $(LDFLAGS) $(CXXFLAGS)
 
 clean:
 	rm -f $(BINS) $(OBJECTS)
